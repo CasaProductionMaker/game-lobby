@@ -91,7 +91,7 @@ let toolTips = ["Use bomb knockback to knock others off the platform!", "Blue bo
 let toolTip = randomFromArray([0, toolTips.length-1]);
 let waitingForJoin = false;
 const playerNameInput = document.querySelector("#player-name");
-let skinNum = parseInt(localStorage.getItem("TheBattleSkin"));
+let skinNum = 1;
 console.log(skinNum)
 
 if(localStorage.getItem("TheBattleName") == null)
@@ -101,10 +101,15 @@ if(localStorage.getItem("TheBattleName") == null)
 name = localStorage.getItem("TheBattleName"); // Set name variable
 playerNameInput.value = name; // Set player name input
 let gamesRef = {};
-document.querySelector(".skin").style.background = "url(images/playerSkins/" + skinNum + ".png)";
 
 firebase.database().ref("games").once("value").then((snapshot) => {
   gamesRef = snapshot.val() || {};
+});
+firebase.database().ref("users").once("value").then((snapshot) => {
+  tempusers = snapshot.val() || {};
+  skinNum = tempusers[localStorage.getItem("TheBattleUser")].skin;
+  if(skinNum == undefined) skinNum = 1;
+  document.querySelector(".skin").style.background = "url(images/playerSkins/" + skinNum + ".png)";
 });
 firebase.database().ref("games").on("value", (snapshot) => {
   //change
@@ -211,6 +216,6 @@ function nextSkin(num) {
     skinNum = 11;
   }
   document.querySelector(".skin").style.background = "url(images/playerSkins/" + skinNum + ".png)";
-  localStorage.setItem("TheBattleSkin", skinNum);
+  firebase.database().ref("users/" + localStorage.getItem("TheBattleUser") + "/skin").set(skinNum)
 }
 loop();

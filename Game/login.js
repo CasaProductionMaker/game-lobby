@@ -92,7 +92,6 @@ function createAccount()
       username: user.value, 
       password: pass.value
     })
-    localStorage.setItem("TheBattleSkin", 1);
     logIn()
   }
 }
