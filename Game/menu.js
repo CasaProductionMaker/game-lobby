@@ -110,6 +110,9 @@ firebase.database().ref("users").once("value").then((snapshot) => {
   skinNum = tempusers[localStorage.getItem("TheBattleUser")].skin;
   if(skinNum == undefined) skinNum = 1;
   document.querySelector(".skin").style.background = "url(images/playerSkins/" + skinNum + ".png)";
+  if(tempusers[localStorage.getItem("TheBattleUser")] == null || tempusers[localStorage.getItem("TheBattleUser")] == undefined) {
+    window.location.href = "login.html";
+  }
 });
 firebase.database().ref("games").on("value", (snapshot) => {
   //change
