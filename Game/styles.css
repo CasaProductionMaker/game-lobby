@@ -14,6 +14,7 @@ html, body {
 	align-items: center;
 	justify-content: center;
 	overflow: hidden;
+	user-select: none;
 }
 h3 {
 	margin: 0.3em;
@@ -197,6 +198,15 @@ button:active:not(#up-move) {
 }
 .Character_name {
   color: black;
+}
+
+/* Win Text */
+
+.winTxt {
+	position: absolute;
+	font-weight: bold;
+	font-size: 60px;
+	z-index: 50;
 }
 
 /* Health bar */

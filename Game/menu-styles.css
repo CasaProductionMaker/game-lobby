@@ -61,6 +61,7 @@ button {
 	border: 0;
 	border-bottom: 2px solid #1e830b;
 	cursor: pointer;
+	margin-right: 5px;
 }
 button:active {
 	position: relative;
@@ -82,4 +83,50 @@ a {
 	width: 160px;
 	scale: 0.25;
 	margin: auto;
+}
+
+.SkinSelector {
+	font-weight: bold;
+	position: relative;
+	top: -250px;
+}
+.skin {
+	background: url(images/playerSkins/1.png);
+	height: 320px;
+	width: 320px;
+	scale: 0.5;
+	position: relative;
+	top: -150px;
+	margin: auto;
+}
+.down_arrow {
+	background: url(images/Arrow.png);
+	height: 130px;
+	width: 110px;
+	scale: 0.4;
+	rotate: 90deg;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	top: -300px;
+	border-bottom: none;
+}
+.down_arrow:active {
+	top: -299px;
+}
+.up_arrow {
+	background: url(images/Arrow.png);
+	height: 130px;
+	width: 110px;
+	scale: 0.4;
+	rotate: -90deg;
+	margin-left: auto;
+	margin-right: auto;
+	border-bottom: none;
+}
+
+.topRight {
+	position: absolute;
+	top: 0;
+	right: 0;
 }

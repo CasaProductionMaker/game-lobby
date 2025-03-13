@@ -22,6 +22,9 @@ let screenDim = {x: window.innerWidth, y: window.innerHeight};
 let mouseTile = {x: undefined, y: undefined};
 let mouseNonRelativePosition = {x: undefined, y: undefined};
 let mouseDown = false;
+document.addEventListener("contextmenu", function(event) {
+  event.preventDefault();
+});
 
 //Player
 let myX = 0;
@@ -44,6 +47,8 @@ let summonID = 0;
 let appliedKnock = true;
 let isDead = false;
 let Bombs = [0, 0]
+let lastBombTick = 0;
+let lastAttackTick = 0;
 
 //Time
 let startTime = new Date();
@@ -94,6 +99,8 @@ let armorStats = {
     ExplosiveReduction: 0
   }
 }
+let opponentName = "";
+let gameWinner = "";
 
 //Misc
 let isDebug = false;
@@ -194,13 +201,6 @@ function distanceBetween(x1, y1, x2, y2) {
           health: players[playerId].health + 1
         })
       }
-      if(players[playerId].health <= 0 && !isDead)
-      {
-        isDead = true;
-        setTimeout(() => {
-          window.location.href = "index.html";
-        }, 1000)
-      }
     }
     //repeat
     setTimeout(() => {
@@ -246,6 +246,63 @@ function distanceBetween(x1, y1, x2, y2) {
       handleMovement(0, yVel);
       myX = players[playerId].x;
       myY = players[playerId].y;
+
+      //Combat
+      if(isSpace && currentGameTick - lastAttackTick > 8)
+      {
+        animationStartFrame = currentGameTick;
+        lastAttackTick = currentGameTick;
+        Object.keys(players).forEach((key) => {
+          const thisPlayer = players[key];
+          if(thisPlayer.id != playerId)
+          {
+            if(((direction == 1 && myX - thisPlayer.x > -60 && myX - thisPlayer.x < 0) || (direction == -1 && myX - thisPlayer.x < 60 && myX - thisPlayer.x > 0)) && Math.abs(myY - thisPlayer.y) < 40)
+            {
+              let damage = weaponStats[players[playerId].weapon].Damage;
+              let isCrit = false;
+              if(yVel > 1)
+              {
+                damage *= 2;
+                isCrit = true;
+              }
+              damage *= (1 - armorStats[thisPlayer.armorType].DamageReduction);
+              if(isCrit)
+              {
+                for (var i = 0; i < Math.ceil(damage / 5) + 1; i++) {
+                  firebase.database().ref(`games/` + gameCode + `/entities/` + summonID).set({
+                    x: thisPlayer.x, 
+                    y: thisPlayer.y, 
+                    xV: (Math.random() * 20) - 10, 
+                    yV: (Math.random() * -5) - 5, 
+                    type: "CritParticle", 
+                    owner: playerId, 
+                    id: summonID
+                  })
+                  summonID++;
+                }
+              }
+              firebase.database().ref("games/" + gameCode + "/players/" + thisPlayer.id).update({
+                health: thisPlayer.health - damage, 
+                xKnock: ((thisPlayer.x - players[playerId].x) / (Math.abs(thisPlayer.x - players[playerId].x) == 0 ? 1 : Math.abs(thisPlayer.x - players[playerId].x))) * 10, 
+                yKnock: -5
+              })
+            }
+          }
+        })
+        if(players[playerId].weapon == "LaserGun")
+        {
+          firebase.database().ref(`games/` + gameCode + `/entities/` + summonID).set({
+            x: players[playerId].x, 
+            y: players[playerId].y, 
+            xV: players[playerId].direction * 15, 
+            yV: 0, 
+            type: "Laser", 
+            owner: playerId, 
+            id: summonID
+          })
+          summonID++;
+        }
+      }
 
       //Graphics
       document.querySelector(".Floor").style.top = -1855 + (screenDim.y/2) - players[playerId].y + "px";
@@ -421,6 +478,15 @@ function distanceBetween(x1, y1, x2, y2) {
           }
         }
       })
+      if(players[playerId].health <= 0 && !isDead)
+      {
+        isDead = true;
+        if(gameWinner == "") firebase.database().ref("games/" + gameCode + "/winner").set(opponentName);
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1000)
+      }
+      if(gameWinner != "") document.querySelector(".winTxt").innerText = (gameWinner == players[playerId].name ? "You Won!" : "You have lost...");
     }
 
     //repeat
@@ -536,60 +602,9 @@ function distanceBetween(x1, y1, x2, y2) {
     new KeyPressListener("KeyD", () => {isD = true;}, () => {isD = false;})
     new KeyPressListener("Space", () => {
       isSpace = true;
-      animationStartFrame = currentGameTick;
-      Object.keys(players).forEach((key) => {
-        const thisPlayer = players[key];
-        if(thisPlayer.id != playerId)
-        {
-          if(((direction == 1 && myX - thisPlayer.x > -60 && myX - thisPlayer.x < 0) || (direction == -1 && myX - thisPlayer.x < 60 && myX - thisPlayer.x > 0)) && Math.abs(myY - thisPlayer.y) < 40)
-          {
-            let damage = weaponStats[players[playerId].weapon].Damage;
-            let isCrit = false;
-            if(yVel > 1)
-            {
-              damage *= 2;
-              isCrit = true;
-            }
-            damage *= (1 - armorStats[thisPlayer.armorType].DamageReduction);
-            if(isCrit)
-            {
-              for (var i = 0; i < Math.ceil(damage / 5 * 3); i++) {
-                firebase.database().ref(`games/` + gameCode + `/entities/` + summonID).set({
-                  x: thisPlayer.x, 
-                  y: thisPlayer.y, 
-                  xV: (Math.random() * 20) - 10, 
-                  yV: (Math.random() * -5) - 5, 
-                  type: "CritParticle", 
-                  owner: playerId, 
-                  id: summonID
-                })
-                summonID++;
-              }
-            }
-            firebase.database().ref("games/" + gameCode + "/players/" + thisPlayer.id).update({
-              health: thisPlayer.health - damage, 
-              xKnock: ((thisPlayer.x - players[playerId].x) / (Math.abs(thisPlayer.x - players[playerId].x) == 0 ? 1 : Math.abs(thisPlayer.x - players[playerId].x))) * 10, 
-              yKnock: -5
-            })
-          }
-        }
-      })
-      if(players[playerId].weapon == "LaserGun")
-      {
-        firebase.database().ref(`games/` + gameCode + `/entities/` + summonID).set({
-          x: players[playerId].x, 
-          y: players[playerId].y, 
-          xV: players[playerId].direction * 15, 
-          yV: 0, 
-          type: "Laser", 
-          owner: playerId, 
-          id: summonID
-        })
-        summonID++;
-      }
     }, () => {isSpace = false;})
     new KeyPressListener("KeyB", () => {
-      if(Bombs[0] > 0)
+      if(Bombs[0] > 0 && currentTick - lastBombTick >= 800)
       {
         firebase.database().ref(`games/` + gameCode + `/entities/` + summonID).set({
           x: players[playerId].x, 
@@ -602,10 +617,11 @@ function distanceBetween(x1, y1, x2, y2) {
         })
         summonID++;
         Bombs[0]--;
+        lastBombTick = currentTick;
       }
     }, () => {})
     new KeyPressListener("KeyN", () => {
-      if(Bombs[1] > 0)
+      if(Bombs[1] > 0 && currentTick - lastBombTick >= 800)
       {
         firebase.database().ref(`games/` + gameCode + `/entities/` + summonID).set({
           x: players[playerId].x, 
@@ -618,12 +634,14 @@ function distanceBetween(x1, y1, x2, y2) {
         })
         summonID++;
         Bombs[1]--;
+        lastBombTick = currentTick;
       }
     }, () => {})
 
     const allPlayersRef = firebase.database().ref(`games/` + gameCode + `/players`);
     const allEntitiesRef = firebase.database().ref(`games/` + gameCode + `/entities`);
     const allPowerupsRef = firebase.database().ref(`games/` + gameCode + `/powerups`);
+    const winnerRef = firebase.database().ref(`games/` + gameCode + `/winner`);
 
     allPlayersRef.on("value", (snapshot) => {
       //change
@@ -633,6 +651,7 @@ function distanceBetween(x1, y1, x2, y2) {
         let el = playerElements[key];
         el.querySelector(".Character_name").innerText = characterState.name;
         el.querySelector(".Character_armor_sprite").style.background = "url(images/armor/" + characterState.armorType + "Armor.png)";
+        el.querySelector(".Character_sprite").style.background = "url(images/playerSkins/" + characterState.skin + ".png)";
         let left = ((characterState.x - myX) + ((screenDim.x / 2) - 16)) + "px";
         let top = ((characterState.y - myY) + ((screenDim.y / 2) - 16)) + "px";
         if(characterState.id === playerId)
@@ -682,6 +701,8 @@ function distanceBetween(x1, y1, x2, y2) {
       {
         left = ((screenDim.x / 2) - 16) + "px";
         top = ((screenDim.y / 2) - 16) + "px";
+      } else {
+        opponentName = addedPlayer.name;
       }
       characterElement.style.transform = `translate3d(${left}, ${top}, 0)`;
 
@@ -779,6 +800,10 @@ function distanceBetween(x1, y1, x2, y2) {
       delete powerupElements[removedKey];
     })
 
+    winnerRef.on("value", (snapshot) => {
+      gameWinner = snapshot.val() || "";
+    })
+
     firebase.database().ref("games/" + gameCode + "/host").once("value").then((snapshot) => {
       gameHost = snapshot.val() || "";
       console.log(gameHost)
@@ -834,7 +859,8 @@ function distanceBetween(x1, y1, x2, y2) {
         weapon: "Sword", 
         direction, 
         animFrame: "", 
-        armorType: "No"
+        armorType: "No", 
+        skin: localStorage.getItem("TheBattleSkin")
       })
 
       //ADD PLAYER JOIN MSG

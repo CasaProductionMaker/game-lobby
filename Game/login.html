@@ -9,15 +9,10 @@
 	</head>
 	<body>
 		<h1>The Battle</h1>
-		<div>
-			<label for="player-user">Username:</label>
-			<input id="player-user" maxlength="16" type="text"/>
+		<div class="content">
+			<button onclick="createAccountMenu()">Create Account</button>
+			<button onclick="loginMenu()">Log in</button>
 		</div>
-		<div>
-			<label for="player-pass">Password:</label>
-			<input id="player-pass" type="password"/>
-		</div>
-		<div><button onclick="logIn()">Log In!</button></div>
 		<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>

@@ -1,6 +1,7 @@
 body {
 	width: 99%;
 	height: 100%;
+	font-family: sans-serif;
 }
 
 #bottom-bar {
@@ -61,7 +62,7 @@ button {
 }
 
 .reply-button {
-	width: 35px;
+	width: 40px;
 	height: 15px;
 	font-size: 10px;
 	padding: 0px;
@@ -70,6 +71,7 @@ button {
 	border-color: #00000000;
 	color: #00000000;
 	border-style: solid;
+	border-radius: 5px;
 }
 
 .Message:hover .reply-button {
@@ -80,6 +82,10 @@ button {
 
 .reply-text {
 	font-size: 10px;
+	font-weight: bold;
+}
+
+.mention-text {
 	font-weight: bold;
 }
 

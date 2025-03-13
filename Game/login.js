@@ -10,8 +10,9 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
 
-let user = document.querySelector("#player-user");
-let pass = document.querySelector("#player-pass");
+let user;
+let pass;
+let content = document.querySelector(".content");
 
 let usersD = firebase.database().ref("users");
 const users = firebase.database().ref("users");
@@ -23,6 +24,8 @@ users.on("child_added", (snapshot) => {
 firebase.database().ref("reloader").set({
   rl: Math.random()*Math.random()*Math.random()*Math.random()*Math.random()
 });
+
+
 function logIn()
 {
   Object.keys(usersD).forEach((key) => {
@@ -33,16 +36,82 @@ function logIn()
       window.location.href = "index.html";
     }
   })
-  firebase.database().ref("users/" + user.value).set({
-  	username: user.value, 
-  	password: pass.value
-  })
-  Object.keys(usersD).forEach((key) => {
-    const thisuser = usersD[key];
-    if(user.value == thisuser.username && pass.value == thisuser.password)
-    {
-      localStorage.setItem("TheBattleUser", thisuser.username);
-      window.location.href = "index.html";
-    }
-  })
 }
+
+function createAccountMenu()
+{
+  content.innerHTML = `
+    <div>
+      <label for="player-user">Username:</label>
+      <input id="player-user" maxlength="16" type="text"/>
+    </div>
+    <div>
+      <label for="player-pass">Password:</label>
+      <input id="player-pass" type="password"/>
+    </div>
+    <div>
+      <label for="player-repeat-pass">Repeat Password:</label>
+      <input id="player-repeat-pass" type="password"/>
+    </div>
+    <div><button onclick="mainMenu()">Back</button><button onclick="createAccount()">Create</button></div>
+  `;
+  user = document.querySelector("#player-user");
+  pass = document.querySelector("#player-pass");
+}
+
+function loginMenu()
+{
+  content.innerHTML = `
+    <div>
+      <label for="player-user">Username:</label>
+      <input id="player-user" maxlength="16" type="text"/>
+    </div>
+    <div>
+      <label for="player-pass">Password:</label>
+      <input id="player-pass" type="password"/>
+    </div>
+    <div><button onclick="mainMenu()">Back</button><button onclick="logIn()">Log In!</button></div>
+  `;
+  user = document.querySelector("#player-user");
+  pass = document.querySelector("#player-pass");
+}
+
+function mainMenu()
+{
+  content.innerHTML = `
+    <button onclick="createAccountMenu()">Create Account</button>
+    <button onclick="loginMenu()">Log in</button>
+  `;
+}
+
+function createAccount()
+{
+  if(user.value != "" && pass.value == document.querySelector("#player-repeat-pass").value)
+  {
+    firebase.database().ref("users/" + user.value).set({
+      username: user.value, 
+      password: pass.value
+    })
+    localStorage.setItem("TheBattleSkin", 1);
+    logIn()
+  }
+}
+
+
+/*
+<div>
+        <label for="player-user">Username:</label>
+        <input id="player-user" maxlength="16" type="text"/>
+      </div>
+      <div>
+        <label for="player-pass">Password:</label>
+        <input id="player-pass" type="password"/>
+      </div>
+      <div>
+        <label for="player-pass">Repeat Password:</label>
+        <input id="player-pass" type="password"/>
+      </div>
+      <div><button onclick="logIn()">Log In!</button></div>
+
+<button onclick="createAccountMenu()">Create Account</button><button onclick="loginMenu()">Log in</button>
+*/

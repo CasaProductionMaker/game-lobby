@@ -91,6 +91,9 @@ let toolTips = ["Use bomb knockback to knock others off the platform!", "Blue bo
 let toolTip = randomFromArray([0, toolTips.length-1]);
 let waitingForJoin = false;
 const playerNameInput = document.querySelector("#player-name");
+let skinNum = parseInt(localStorage.getItem("TheBattleSkin"));
+console.log(skinNum)
+
 if(localStorage.getItem("TheBattleName") == null)
 {
 	localStorage.setItem("TheBattleName", createName());
@@ -98,6 +101,7 @@ if(localStorage.getItem("TheBattleName") == null)
 name = localStorage.getItem("TheBattleName"); // Set name variable
 playerNameInput.value = name; // Set player name input
 let gamesRef = {};
+document.querySelector(".skin").style.background = "url(images/playerSkins/" + skinNum + ".png)";
 
 firebase.database().ref("games").once("value").then((snapshot) => {
   gamesRef = snapshot.val() || {};
@@ -132,6 +136,7 @@ function createGame() {
   firebase.database().ref("games/" + gameCode + "/host").set(localStorage.getItem("TheBattleUser"));
   firebase.database().ref("games/" + gameCode + "/isOpen").set(true);
   firebase.database().ref("games/" + gameCode + "/code").set(gameCode);
+  firebase.database().ref("games/" + gameCode + "/winner").set("");
   localStorage.setItem("TheBattleGame", gameCode);
 }
 
@@ -160,7 +165,14 @@ function attemptJoinGame()
     waitingForJoin = true;
     document.querySelector(".Loading").style.visibility = "visible";
     document.querySelector(".Play").style.visibility = "hidden";
+    document.querySelector(".SkinSelector").style.visibility = "hidden";
   }
+}
+
+function logOut()
+{
+  localStorage.removeItem("TheBattleUser");
+  window.location.href = "login.html";
 }
 
 function loop() {
@@ -186,5 +198,19 @@ function loop() {
   setTimeout(() => {
     loop();
   }, 10);
+}
+function nextSkin(num) {
+  skinNum += num;
+  console.log(skinNum)
+  if(skinNum > 11)
+  {
+    skinNum = 1;
+  }
+  if(skinNum < 1)
+  {
+    skinNum = 11;
+  }
+  document.querySelector(".skin").style.background = "url(images/playerSkins/" + skinNum + ".png)";
+  localStorage.setItem("TheBattleSkin", skinNum);
 }
 loop();

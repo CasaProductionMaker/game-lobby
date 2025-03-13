@@ -71,17 +71,19 @@ chat.on("child_added", (snapshot) => {
   const thismessage = snapshot.val();
   const key = thismessage.id;
   chatD[key] = thismessage;
+  let messageToDisplay = thismessage.message;
 
   // Create the DOM Element
   const messageElement = document.createElement("div");
   messageElement.classList.add("Message");
-  if (thismessage.message.indexOf("@" + user) > -1)
+  if(thismessage.message.indexOf("@" + user) > -1)
   {
     messageElement.classList.add("Mention");
   }
-  if (thismessage.message.indexOf("@everyone") > -1)
+  if(thismessage.message.indexOf("@everyone") > -1)
   {
     messageElement.classList.add("Mention");
+    messageToDisplay = messageToDisplay.slice(0, thismessage.message.indexOf("@everyone")) + "<span class='mention-text'>" + messageToDisplay.slice(thismessage.message.indexOf("@everyone"), thismessage.message.indexOf("@everyone") + 9) + "</span>" + messageToDisplay.slice(thismessage.message.indexOf("@everyone") + 9);
   }
   let thisrank = "worker";
   for (let auser in usersD) {
@@ -89,16 +91,20 @@ chat.on("child_added", (snapshot) => {
     {
       thisrank = usersD[auser]["rank"];
     }
+    if(thismessage.message.indexOf("@" + auser) > -1)
+    {
+      messageToDisplay = messageToDisplay.slice(0, thismessage.message.indexOf("@" + auser)) + "<span class='mention-text'>" + messageToDisplay.slice(thismessage.message.indexOf("@" + auser), thismessage.message.indexOf("@" + auser) + auser.length + 1) + "</span>" + messageToDisplay.slice(thismessage.message.indexOf("@" + auser) + auser.length + 1);
+    }
   }
   if(previousload.sender == thismessage.sender && thismessage.replyto == null)
   {
-    messageElement.innerHTML = thismessage.message + "<button onclick='replytomsg = " + thismessage.id + "' class='reply-button'>Reply</button>";
+    messageElement.innerHTML = messageToDisplay + "<button onclick='replytomsg = " + thismessage.id + "' class='reply-button'>Reply</button>";
   } else {
     if(thismessage.replyto != null)
     {
-      messageElement.innerHTML = "<div class='reply-text'>" + chatD[thismessage.replyto].sender + ": " + chatD[thismessage.replyto].message + "</div><div class='message-name " + thisrank + "'>" + thismessage.sender + "</div>" + thismessage.message + "<button onclick='replytomsg = " + thismessage.id + "' class='reply-button'>Reply</button>";
+      messageElement.innerHTML = "<div class='reply-text'>" + chatD[thismessage.replyto].sender + ": " + chatD[thismessage.replyto].message + "</div><div class='message-name " + thisrank + "'>" + thismessage.sender + "</div>" + messageToDisplay + "<button onclick='replytomsg = " + thismessage.id + "' class='reply-button'>Reply</button>";
     } else {
-      messageElement.innerHTML = "<div class='message-name " + thisrank + "'>" + thismessage.sender + "</div>" + thismessage.message + "<button onclick='replytomsg = " + thismessage.id + "' class='reply-button'>Reply</button>";
+      messageElement.innerHTML = "<div class='message-name " + thisrank + "'>" + thismessage.sender + "</div>" + messageToDisplay + "<button onclick='replytomsg = " + thismessage.id + "' class='reply-button'>Reply</button>";
     }
   }
   previousload = thismessage;
