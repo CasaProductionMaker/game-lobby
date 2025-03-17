@@ -28,7 +28,14 @@
 			<button onclick="nextSkin(-1)" class="down_arrow"></button>
 		</div>
 		<div class="topRight">
+			<button onclick="setStats('visible')">Statistics</button>
 			<button onclick="logOut()">Log Out</button>
+		</div>
+		<div class="StatsMenu">
+			<button id="exitStats" onclick="setStats('hidden')">X</button>
+			<h2>Statistics</h2>
+			<h6 id="tW">Total wins: 0</h6>
+			<h6 id="tL">Total losses: 0</h6>
 		</div>
 		<script type="text/javascript" src="menu.js"></script>
 	</body>

@@ -17,7 +17,7 @@ let screenDim = {x: window.innerWidth, y: window.innerHeight};
 let mouseDown = false;
 let drawMode = 0;
 let canvasDim = 16;
-let pixelSize = 128 / canvasDim;
+let pixelSize = 256 / canvasDim;
 let shape = randomFromArray(["circle", "triangle", "square"])
 document.querySelector("#prompt").innerText = "Please draw a " + shape + ":"
 
@@ -80,7 +80,7 @@ for (var y = 0; y < canvasDim; y++) {
 
 window.addEventListener('mousemove', (event) => {
   mousePos = {x: event.clientX, y: event.clientY};
-  let margin = {x: (screenDim.x - 128) / 2, y: (screenDim.y - 128) / 2};
+  let margin = {x: (screenDim.x - 256) / 2, y: (screenDim.y - 256) / 2};
   mouseTile = {x: Math.floor((mousePos.x - margin.x) / pixelSize), y: Math.floor((mousePos.y - margin.y) / pixelSize)};
   if(mouseDown)
   {

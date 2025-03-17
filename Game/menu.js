@@ -92,7 +92,7 @@ let toolTip = randomFromArray([0, toolTips.length-1]);
 let waitingForJoin = false;
 const playerNameInput = document.querySelector("#player-name");
 let skinNum = 1;
-console.log(skinNum)
+let stats = {}
 
 if(localStorage.getItem("TheBattleName") == null)
 {
@@ -107,13 +107,30 @@ firebase.database().ref("games").once("value").then((snapshot) => {
 });
 firebase.database().ref("users").once("value").then((snapshot) => {
   tempusers = snapshot.val() || {};
-  skinNum = tempusers[localStorage.getItem("TheBattleUser")].skin;
+  myUser = tempusers[localStorage.getItem("TheBattleUser")];
+  skinNum = myUser.skin;
   if(skinNum == undefined) skinNum = 1;
   document.querySelector(".skin").style.background = "url(images/playerSkins/" + skinNum + ".png)";
   localStorage.setItem("TheBattleSkin", skinNum)
-  if(tempusers[localStorage.getItem("TheBattleUser")] == null || tempusers[localStorage.getItem("TheBattleUser")] == undefined) {
+  if(myUser == null || myUser == undefined) {
     window.location.href = "login.html";
   }
+
+  if(myUser.stats == undefined)
+  {
+    firebase.database().ref("users/" + localStorage.getItem("TheBattleUser") + "/stats/totalWins").set(0);
+    firebase.database().ref("users/" + localStorage.getItem("TheBattleUser") + "/stats/totalLosses").set(0);
+  } else {
+    if(myUser.stats.totalWins == undefined)
+    {
+      firebase.database().ref("users/" + localStorage.getItem("TheBattleUser") + "/stats/totalWins").set(0);
+    }
+    if(myUser.stats.totalLosses == undefined)
+    {
+      firebase.database().ref("users/" + localStorage.getItem("TheBattleUser") + "/stats/totalLosses").set(0);
+    }
+  }
+  stats = myUser.stats;
 });
 firebase.database().ref("games").on("value", (snapshot) => {
   //change
@@ -208,6 +225,7 @@ function loop() {
     loop();
   }, 10);
 }
+
 function nextSkin(num) {
   skinNum += num;
   console.log(skinNum)
@@ -223,4 +241,11 @@ function nextSkin(num) {
   firebase.database().ref("users/" + localStorage.getItem("TheBattleUser") + "/skin").set(skinNum)
   localStorage.setItem("TheBattleSkin", skinNum)
 }
+
+function setStats(active) {
+  document.querySelector(".StatsMenu").style.visibility = active;
+  document.querySelector("#tW").innerText = "Total wins: " + stats.totalWins;
+  document.querySelector("#tL").innerText = "Total losses: " + stats.totalLosses;
+}
+
 loop();

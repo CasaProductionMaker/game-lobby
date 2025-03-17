@@ -12,13 +12,13 @@ h2 {
 }
 
 #grid {
-	width: 128px;
-	height: 128px;
+	width: 256px;
+	height: 256px;
 	position: absolute;
 	top: 50%;
     left: 50%;
-    margin-top: -64px;
-    margin-left: -64px;
+    margin-top: -128px;
+    margin-left: -128px;
 	outline-color: black;
 	outline-style: solid;
 	outline-width: 5px;
@@ -35,7 +35,7 @@ button {
 	position: absolute;
 	top: 50%;
     left: 50%;
-    margin-top: 75px;
+    margin-top: 140px;
     margin-left: -32px;
     background-color: #AAAAAA;
     border-radius: 3px;

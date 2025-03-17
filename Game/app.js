@@ -49,6 +49,7 @@ let isDead = false;
 let Bombs = [0, 0]
 let lastBombTick = 0;
 let lastAttackTick = 0;
+let userRef;
 
 //Time
 let startTime = new Date();
@@ -482,6 +483,7 @@ function distanceBetween(x1, y1, x2, y2) {
       {
         isDead = true;
         if(gameWinner == "") firebase.database().ref("games/" + gameCode + "/winner").set(opponentName);
+        firebase.database().ref("users/" + localStorage.getItem("TheBattleUser") + "/stats/totalLosses").set(userRef.stats.totalLosses + 1);
         setTimeout(() => {
           window.location.href = "index.html";
         }, 1000)
@@ -713,7 +715,11 @@ function distanceBetween(x1, y1, x2, y2) {
     allPlayersRef.on("child_removed", (snapshot) => {
       const removedKey = snapshot.val().id;
       firebase.database().ref("games/" + gameCode).remove();
-      if(removedKey != playerId) window.location.href = "index.html";
+      if(removedKey != playerId)
+      {
+        window.location.href = "index.html";
+        firebase.database().ref("users/" + localStorage.getItem("TheBattleUser") + "/stats/totalWins").set(userRef.stats.totalWins + 1);
+      }
       gameContainer.removeChild(playerElements[removedKey]);
       delete playerElements[removedKey];
     })
@@ -846,6 +852,11 @@ function distanceBetween(x1, y1, x2, y2) {
       }
       const x = randomFromArray([-310, -260, -210, -160, -110, -60, -10, 40, 90, 140, 190, 240, 290]);
       const y = 0;
+
+      firebase.database().ref("users").once("value").then((snapshot) => {
+        tempusers = snapshot.val() || {};
+        userRef = tempusers[localStorage.getItem("TheBattleUser")];
+      });
 
       playerRef.set({
         id: playerId,
