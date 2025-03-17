@@ -110,6 +110,7 @@ firebase.database().ref("users").once("value").then((snapshot) => {
   skinNum = tempusers[localStorage.getItem("TheBattleUser")].skin;
   if(skinNum == undefined) skinNum = 1;
   document.querySelector(".skin").style.background = "url(images/playerSkins/" + skinNum + ".png)";
+  localStorage.setItem("TheBattleSkin", skinNum)
   if(tempusers[localStorage.getItem("TheBattleUser")] == null || tempusers[localStorage.getItem("TheBattleUser")] == undefined) {
     window.location.href = "login.html";
   }
@@ -220,5 +221,6 @@ function nextSkin(num) {
   }
   document.querySelector(".skin").style.background = "url(images/playerSkins/" + skinNum + ".png)";
   firebase.database().ref("users/" + localStorage.getItem("TheBattleUser") + "/skin").set(skinNum)
+  localStorage.setItem("TheBattleSkin", skinNum)
 }
 loop();
