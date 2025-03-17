@@ -56,10 +56,11 @@ function submitToDB() {
 		shapeOuputs = "[0.0, 0.0, 1.0]";
 	}
 
-	firebase.database().ref("submissions/" + Math.floor(Math.random() * 100000000000000)).set(`dataPoint(${inputs}, ${shapeOuputs}, "${shape}")`)
-	setTimeout(() => {
-		location.reload()
-	}, 2000)
+	firebase.database().ref("submissions/" + Math.floor(Math.random() * 100000000000000))
+  .set(`dataPoint(${inputs}, ${shapeOuputs}, "${shape}")`)
+  .then(() => {
+    location.reload()
+  })
 }
 
 for (var y = 0; y < canvasDim; y++) {
