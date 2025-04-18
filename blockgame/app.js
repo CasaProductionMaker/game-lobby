@@ -10,6 +10,12 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
 
+//Prevent Right-clicks
+document.addEventListener("contextmenu", function(event) {
+  event.preventDefault();
+});
+
+
 //Seed Generation
 let seed = Math.random();
 
