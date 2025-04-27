@@ -19,7 +19,10 @@ let drawMode = 0;
 let canvasDim = 16;
 let pixelSize = 256 / canvasDim;
 let shape = randomFromArray(["circle", "triangle", "square"])
-document.querySelector("#prompt").innerText = "Please draw a " + shape + ":"
+if(document.querySelector("#prompt") != null)
+{
+	document.querySelector("#prompt").innerText = "Please draw a " + shape + ":"
+}
 
 function randomFromArray(array) {
 	return array[Math.floor(Math.random() * array.length)];
@@ -63,6 +66,21 @@ function submitToDB() {
   })
 }
 
+function copyDrawing() {
+	inputs = "";
+
+	for (var i = 0; i < gridList.length; i++) {
+		for (var j = 0; j < gridList.length; j++) {
+			inputs += (gridList[i][j] + ".0,")
+		}
+	}
+
+	inputs = inputs.slice(0, -1);
+
+	navigator.clipboard.writeText(inputs);
+	location.reload()
+}
+
 for (var y = 0; y < canvasDim; y++) {
 	gridList.push([])
 	gridElements.push([])
@@ -80,6 +98,7 @@ for (var y = 0; y < canvasDim; y++) {
 
 window.addEventListener('mousemove', (event) => {
   mousePos = {x: event.clientX, y: event.clientY};
+  screenDim = {x: window.innerWidth, y: window.innerHeight};
   let margin = {x: (screenDim.x - 256) / 2, y: (screenDim.y - 256) / 2};
   mouseTile = {x: Math.floor((mousePos.x - margin.x) / pixelSize), y: Math.floor((mousePos.y - margin.y) / pixelSize)};
   if(mouseDown)
