@@ -514,7 +514,7 @@ function distanceBetween(x1, y1, x2, y2) {
     //repeat
     setTimeout(() => {
       dropPowerups();
-    }, randomFromArray([8000, 9000, 10000, 11000]));
+    }, randomFromArray([4000, 5000, 6000, 7000]));
   }
   function renderLoop() {
     Object.keys(players).forEach((key) => {
