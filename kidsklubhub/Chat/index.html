@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="../styles.css">
+		<link rel="stylesheet" type="text/css" href="chat-styles.css">
+		<title>Kids Club Chat</title>
+	</head>
+	<body>
+		<header>
+			<h3>Chat</h3>
+	    	<button onclick="loadHomepage()" id="home-button">Home</button>
+			<button onclick="logUserOut()" id="logout-button">Logout</button>
+		</header>
+		<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    	<script type="text/javascript" src="../KeyPressListener.js"></script>
+    	<div id="chat-container"></div>
+    	<div id="bottom-bar">
+	    	<input type="text" name="chat_bar" id="chat_input">
+	    	<script type="text/javascript" src="app.js"></script>
+	    	<button onclick="sendMessage()">Send</button>
+	    </div>
+	</body>
+</html>

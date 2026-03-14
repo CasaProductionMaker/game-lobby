@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="../styles.css">
+		<link rel="stylesheet" type="text/css" href="fool-styles.css">
+		<link rel="stylesheet" type="text/css" href="Responsive.css">
+		<title>Fool Plans</title>
+	</head>
+	<body>
+		<h1>Kids Club Hub - Fool Plans</h1>
+		<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    	<p>Here, you can plan April Fools to play on your friends! Collaborate, or come up with a fool yourself.</p>
+    	<script type="text/javascript" src="fool-app.js"></script>
+    	<button onclick="logUserOut()" id="logout-button">Logout</button>
+	    <button onclick="loadHomepage()" id="home-button">Home</button>
+	    <div id="createF" class="col-lg-11">
+	    	<label for="name">Name</label><input type="text" name="name" id="fname"><br>
+	    	<textarea cols="30" rows="6" id="fdesc"></textarea><br>
+	    	<button onclick="createFool()">Create Fool</button>
+	    </div>
+	    <div id="editF" class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+	    	<label for="name">Name</label><input type="text" name="name" id="ename"><br>
+	    	<textarea cols="30" rows="6" id="edesc"></textarea><br>
+	    	<button onclick="applyEditToFool()">Apply Changes</button>
+	    </div>
+	</body>
+</html>

@@ -1,0 +1,81 @@
+.activity {
+	background-color: lightskyblue;
+	padding: 0.5em;
+	border: 2px solid #000;
+	border-radius: 1em;
+	font-size: 1em;
+	text-align: center;
+	box-shadow: 0 0 10px #0007;
+}
+
+.activity_container {
+	display: grid;
+	grid-template-columns: auto auto;
+	padding: 2em;
+	gap: 1.5em;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+header {
+	justify-content: end;
+}
+
+a {
+	text-decoration: none;
+	font-size: 1.5em;
+	font-family: "copperplate";
+	color: black;
+	transition: font-size 0.5s;
+}
+
+/* a:hover {
+	font-size: 2em;
+} */
+
+@media (max-width: 767px) {
+  	.activity {
+		width: 35%;
+		background-color: lightskyblue;
+		padding: 5px;
+		border-width: 3px;
+		border-style: solid;
+		border-radius: 4px;
+		font-size: 20px;
+		text-align: center;
+		margin: 10px;
+		float: left;
+	}
+	a {
+		text-decoration: none;
+		font-size: 20px;
+		font-family: "copperplate";
+		color: black;
+		transition: font-size 0.5s;
+	}
+	a:hover {
+		font-size: 23px;
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	.activity {
+		background-color: #3e4550;
+		border: 1px solid #575a6d;
+		box-shadow: #0009;
+	}
+
+	a {
+		color: #EEE;
+	}
+
+	.activity p {
+		color: #CCC
+	}
+}
+
+/* header 212229 */

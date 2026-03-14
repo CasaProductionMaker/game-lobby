@@ -1,0 +1,66 @@
+h1 {
+	font-family: sans-serif;
+	font-size: 400%;
+	text-align: center;
+}
+h2 {
+	font-family: sans-serif;
+	font-size: 200%;
+	text-align: center;
+}
+
+.operation {
+	background-color: lightskyblue;
+	padding: 5px;
+	border-width: 3px;
+	border-style: solid;
+	border-radius: 4px;
+	font-size: 20px;
+	text-align: center;
+	margin-bottom: 5%;
+	overflow-wrap: anywhere;
+}
+
+body {
+	background-color: lightblue;
+}
+
+h3 {
+	text-decoration: none;
+	font-size: 30px;
+	font-family: "copperplate";
+	color: black;
+	margin-bottom: 10px;
+	margin-top: 5px;
+}
+h4 {
+	text-decoration: none;
+	font-size: 22px;
+	font-family: "copperplate";
+	color: black;
+	margin-top: 0px;
+	margin-bottom: 5px;
+}
+
+#createOp {
+	margin: 20px;
+	text-align: center;
+}
+
+#opdesc {
+	height: 112px;
+	font-size: 14px;
+	overflow-wrap: break-word;
+	overflow-y: scroll;
+}
+
+#logout-button {
+	float: right;
+}
+#home-button {
+	float: right;
+}
+
+textarea {
+	resize: none;
+}
