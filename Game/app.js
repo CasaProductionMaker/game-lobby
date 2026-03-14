@@ -451,9 +451,9 @@ function distanceBetween(x1, y1, x2, y2) {
                   armorType: "Blue"
                 })
               } else if(thisPowerup.type == "Bomb") {
-                Bombs[0] += 3;
+                Bombs[0] += 5;
               } else if(thisPowerup.type == "BlueBomb") {
-                Bombs[1] += 3;
+                Bombs[1] += 5;
               }
               firebase.database().ref("games/" + gameCode + "/powerups/" + thisPowerup.id).update({
                 framesAlive: 250
