@@ -23,13 +23,6 @@ body {
 	gap: 1em;
 }
 
-input, button {
-	border-radius: 1.5em;
-	padding: 0.5em;
-	border: 1px solid #000;
-	box-shadow: 0 0 5px #0003;
-}
-
 #chat_input {
 	flex: 2;
 }
@@ -106,11 +99,5 @@ input, button {
 		border: 1px solid #7c8eaf;
 		box-shadow: 0 0 5px #0004;
 		background-color: #4a5569;
-		color: #DDD;
-	}
-
-	button {
-		background-color: #525e74;
-		border: 1px solid #7c8eaf;
 	}
 }

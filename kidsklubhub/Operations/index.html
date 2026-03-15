@@ -5,27 +5,34 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" type="text/css" href="../styles.css">
 		<link rel="stylesheet" type="text/css" href="operations-styles.css">
-		<link rel="stylesheet" type="text/css" href="Responsive.css">
+		<link rel="stylesheet" type="text/css" href="../Responsive.css">
 		<title>Kids Club Hub</title>
 	</head>
 	<body>
-		<h1>Kids Club Hub - Operations</h1>
+		<header>
+			<h3 id="navbar_title">Kids Club Hub - Operations</h3>
+	    	<button onclick="loadHomepage()" id="home-button">Home</button>
+			<button onclick="logUserOut()" id="logout-button">Logout</button>
+		</header>
 		<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     	<p>Here, all the Kids Club Operations will be posted. Operations are plans to do something fun, useful, or any plans that have a codename, and are planned over a long stretch of time. Anyone can create operations, and delete their own operations. If you are interested in participating in an operation, press the "I'm In" button on the operation. To create an operation, fill in the form below.</p>
     	<script type="text/javascript" src="operations-app.js"></script>
-    	<button onclick="logUserOut()" id="logout-button">Logout</button>
-	    <button onclick="loadHomepage()" id="home-button">Home</button>
-	    <div id="createOp" class="col-lg-11">
-	    	<label for="name">Name</label><input type="text" name="name" id="opname"><br>
-	    	<textarea cols="30" rows="6" id="opdesc"></textarea><br>
+	    <div id="createOp">
+			<div class="form_section">
+	    		<label for="name">Name: </label><input type="text" name="name" id="opname">
+			</div>
+	    	<textarea cols="40" rows="6" id="opdesc"></textarea>
 	    	<button onclick="createOperation()">Create Operation</button>
 	    </div>
-	    <div id="editOp" class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
-	    	<label for="name">Name</label><input type="text" name="name" id="ename"><br>
-	    	<textarea cols="30" rows="6" id="edesc"></textarea><br>
+	    <div id="editOp">
+			<div class="form_section">
+	    		<label for="name">Name</label><input type="text" name="name" id="ename">
+			</div>
+	    	<textarea cols="40" rows="6" id="edesc"></textarea>
 	    	<button onclick="applyEditToOperation()">Apply Changes</button>
 	    </div>
+		<div id="operation_container"></div>
 	</body>
 </html>

@@ -44,8 +44,8 @@ operations.on("child_added", (snapshot) => {
 	operationsD[key] = thisoperation;
 
 	// Create the DOM Element
-		const operationEl = document.createElement("div");
-		operationEl.classList.add("operation", "col-lg-5");
+	const operationEl = document.createElement("div");
+	operationEl.classList.add("operation");
 	let followerList = "";
 	let peopleIn = 0;
 	for (let follower in thisoperation.followers) {
@@ -53,9 +53,9 @@ operations.on("child_added", (snapshot) => {
 		peopleIn++;
 	}
 	followerList = followerList.substring(2);
-		operationEl.innerHTML = "<h3>" + thisoperation.name + "</h3><h4>" + thisoperation.creator + "</h4>" + (thisoperation.creator == user ? "<button onclick='editOperation(" + thisoperation.id + ")'>Edit</button><button onclick='deleteOperation(" + thisoperation.id + ")'>Delete</button>" : "") + "<p>" + thisoperation.desc + "</p><p>" + peopleIn + " people are in: " + followerList + "</p><button onclick='joinOperation(" + thisoperation.id + ")'>I'm In!</button><button onclick='leaveOperation(" + thisoperation.id + ")'>I'm Out!</button>";
+	operationEl.innerHTML = "<h3>" + thisoperation.name + "</h3><h4>" + thisoperation.creator + "</h4>" + (thisoperation.creator == user ? "<button onclick='editOperation(" + thisoperation.id + ")'>Edit</button><button onclick='deleteOperation(" + thisoperation.id + ")' class='right_button'>Delete</button>" : "") + "<p>" + thisoperation.desc + "</p><p>" + peopleIn + " people are in: " + followerList + "</p><button onclick='joinOperation(" + thisoperation.id + ")'>I'm In!</button><button onclick='leaveOperation(" + thisoperation.id + ")' class='right_button'>I'm Out!</button>";
 
-	document.body.appendChild(operationEl);
+	document.getElementById("operation_container").appendChild(operationEl);
 	operationsElements[key] = operationEl;
 })
 
@@ -67,11 +67,11 @@ operations.on("value", (snapshot) => {
 		let followerList = "";
 		let peopleIn = 0;
 		for (let follower in thisoperation.followers) {
-		followerList = followerList + ", " + follower;
-		peopleIn++;
+			followerList = followerList + ", " + follower;
+			peopleIn++;
 		}
 		followerList = followerList.substring(2);
-		el.innerHTML = "<h3>" + thisoperation.name + "</h3><h4>" + thisoperation.creator + "</h4>" + (thisoperation.creator == user ? "<button onclick='editOperation(" + thisoperation.id + ")'>Edit</button><button onclick='deleteOperation(" + thisoperation.id + ")'>Delete</button>" : "") + "<p>" + thisoperation.desc + "</p><p>" + peopleIn + " people are in: " + followerList + "</p><button onclick='joinOperation(" + thisoperation.id + ")'>I'm In!</button><button onclick='leaveOperation(" + thisoperation.id + ")'>I'm Out!</button>";
+		el.innerHTML = "<h3>" + thisoperation.name + "</h3><h4>" + thisoperation.creator + "</h4>" + (thisoperation.creator == user ? "<button onclick='editOperation(" + thisoperation.id + ")'>Edit</button><button onclick='deleteOperation(" + thisoperation.id + ")' class='right_button'>Delete</button>" : "") + "<p>" + thisoperation.desc + "</p><p>" + peopleIn + " people are in: " + followerList + "</p><button onclick='joinOperation(" + thisoperation.id + ")'>I'm In!</button><button onclick='leaveOperation(" + thisoperation.id + ")' class='right_button'>I'm Out!</button>";
 	})
 })
 
