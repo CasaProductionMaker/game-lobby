@@ -46,11 +46,12 @@ fools.on("child_added", (snapshot) => {
 	foolsD[key] = thisfool;
 
 	// Create the DOM Element
-		const foolEl = document.createElement("div");
-		foolEl.classList.add("fool", "col-lg-5");
+	const foolEl = document.createElement("div");
+	foolEl.classList.add("fool");
 	let followerList = "";
 	let peopleIn = 0;
 	let isIn = false;
+
 	for (let follower in thisfool.followers) {
 		followerList = followerList + ", " + follower;
 		peopleIn++;
@@ -61,12 +62,13 @@ fools.on("child_added", (snapshot) => {
 		isIn = true;
 		}
 	}
+
 	followerList = followerList.substring(2);
-		foolEl.innerHTML = "<h3>" + thisfool.name + "</h3><h4>" + thisfool.creator + "</h4>" + (thisfool.creator == user ? "<button onclick='editFool(" + thisfool.id + ")'>Edit</button><button onclick='deleteFool(" + thisfool.id + ")'>Delete</button>" : "") + "<p>" + thisfool.desc + "</p><p>" + peopleIn + " people are in: " + followerList + "</p><button onclick='inviteFool(" + thisfool.id + ")'>Invite a Friend</button>" + (thisfool.creator == user ? "" : "<button onclick='leaveFool(" + thisfool.id + ")'>Leave Fool</button>");
+	foolEl.innerHTML = "<h3>" + thisfool.name + "</h3><h4>" + thisfool.creator + "</h4>" + (thisfool.creator == user ? "<button onclick='editFool(" + thisfool.id + ")'>Edit</button><button onclick='deleteFool(" + thisfool.id + ")' class='right_button'>Delete</button>" : "") + "<p>" + thisfool.desc + "</p><p>" + peopleIn + " people are in: " + followerList + "</p>" + (thisfool.creator == user ? "<button onclick='inviteFool(" + thisfool.id + ")'>Invite a Friend</button>" : "") + (thisfool.creator == user ? "" : "<button onclick='leaveFool(" + thisfool.id + ")'>Leave Fool</button>");
 
 	if(isIn || thisfool.creator == user)
 	{
-		document.body.appendChild(foolEl);
+		document.getElementById("fools_container").appendChild(foolEl);
 		foolsElements[key] = foolEl;
 	}
 	if(thisfool.creator == user)
@@ -84,17 +86,17 @@ fools.on("value", (snapshot) => {
 		let peopleIn = 0;
 		let isIn = false;
 		for (let follower in thisfool.followers) {
-		followerList = followerList + ", " + follower;
-		peopleIn++;
-		if(follower == user)
-		{
-			isIn = true;
-		}
+			followerList = followerList + ", " + follower;
+			peopleIn++;
+			if(follower == user)
+			{
+				isIn = true;
+			}
 		}
 		followerList = followerList.substring(2);
 		if(isIn)
 		{
-		el.innerHTML = "<h3>" + thisfool.name + "</h3><h4>" + thisfool.creator + "</h4>" + (thisfool.creator == user ? "<button onclick='editFool(" + thisfool.id + ")'>Edit</button><button onclick='deleteFool(" + thisfool.id + ")'>Delete</button>" : "") + "<p>" + thisfool.desc + "</p><p>" + peopleIn + " people are in: " + followerList + "</p><button onclick='inviteFool(" + thisfool.id + ")'>Invite a Friend</button>" + (thisfool.creator == user ? "" : "<button onclick='leaveFool(" + thisfool.id + ")'>Leave Fool</button>");
+			el.innerHTML = "<h3>" + thisfool.name + "</h3><h4>" + thisfool.creator + "</h4>" + (thisfool.creator == user ? "<button onclick='editFool(" + thisfool.id + ")'>Edit</button><button onclick='deleteFool(" + thisfool.id + ")' class='right_button'>Delete</button>" : "") + "<p>" + thisfool.desc + "</p><p>" + peopleIn + " people are in: " + followerList + "</p>" + (thisfool.creator == user ? "<button onclick='inviteFool(" + thisfool.id + ")'>Invite a Friend</button>" : "") + (thisfool.creator == user ? "" : "<button onclick='leaveFool(" + thisfool.id + ")' class='right_button'>Leave Fool</button>");
 		}
 	})
 })
