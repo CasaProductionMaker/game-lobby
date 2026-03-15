@@ -1,44 +1,27 @@
-h1 {
-	font-family: sans-serif;
-	font-size: 400%;
-	text-align: center;
-}
-h2 {
-	font-family: sans-serif;
-	font-size: 200%;
-	text-align: center;
-}
-
 .person {
 	background-color: lightskyblue;
-	padding: 5px;
-	border-width: 3px;
-	border-style: solid;
-	border-radius: 4px;
-	font-size: 20px;
+	padding: 0.5em;
+	border: 2px solid #000;
+	border-radius: 1em;
+	font-size: 1em;
 	text-align: center;
+	box-shadow: 0 0 10px #0007;
 	margin-left: auto;
 	margin-right: auto;
 	width: 60%;
-	margin-top: 20px;
-	margin-bottom: 20px;
-}
-
-body {
-	background-color: lightblue;
+	margin-top: 2em;
+	margin-bottom: 2em;
 }
 
 h3 {
 	font-size: 30px;
 	font-family: "copperplate";
-	color: black;
 	margin-bottom: 10px;
 	margin-top: 5px;
 }
 h4 {
 	font-size: 22px;
 	font-family: "copperplate";
-	color: black;
 	margin-top: 0px;
 	margin-bottom: 5px;
 }
@@ -46,14 +29,14 @@ h4 {
 h6 {
 	font-size: 20px;
 	font-family: "copperplate";
-	color: black;
 	margin-top: 0px;
 	margin-bottom: 5px;
 }
 
-#logout-button {
-	float: right;
-}
-#home-button {
-	float: right;
+@media (prefers-color-scheme: dark) {
+	.person {
+		background-color: #3e4550;
+		border: 1px solid #575a6d;
+		box-shadow: #0009;
+	}
 }

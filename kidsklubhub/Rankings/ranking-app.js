@@ -15,16 +15,16 @@ let user = localStorage.getItem("username");
 let saveUser = false;
 if(user == "null")
 {
-  window.location.href = "index.html";
+  window.location.href = "../Login/index.html";
 }
 function loadHomepage() {
   saveUser = true;
   console.log(saveUser)
-  window.location.href = "homepage.html";
+  window.location.href = "../Home/index.html";
 }
 function logUserOut() {
   localStorage.setItem("username", "null");
-  window.location.href = "index.html";
+  window.location.href = "../Login/index.html";
 }
 
 window.addEventListener('beforeunload', (event) => {
