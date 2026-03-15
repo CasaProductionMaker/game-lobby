@@ -43,27 +43,31 @@
 
 #editOp {
 	position: fixed;
-	left: 35vw;
-	top: 40vh;
-	background-color: rgba(0, 0, 0, 0.3);
-	width: 20vw;
+	left: 25vw;
+	top: auto;
+	background-color: #0008;
+	width: 50vw;
 	visibility: hidden;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+	padding: 1em;
+	border-radius: 1em;
+	align-items: center;
+	justify-content: center;
+	backdrop-filter: blur(5px);
 }
 
 #opdesc {
-	height: 112px;
-	font-size: 14px;
+	font-size: 1em;
 	overflow-wrap: break-word;
 	overflow-y: scroll;
 }
 
 #edesc {
-	height: 112px;
-	width: 18vw;
-	font-size: 14px;
+	font-size: 1em;
 	overflow-wrap: break-word;
 	overflow-y: scroll;
-	margin: 1vw;
 }
 #ename {
 	width: 10vw;
@@ -71,7 +75,7 @@
 
 textarea {
 	resize: none;
-	border-radius: 1.5em;
+	border-radius: 0.5em;
 	padding: 0.5em;
 	border: 1px solid #000;
 	box-shadow: 0 0 5px #0003;

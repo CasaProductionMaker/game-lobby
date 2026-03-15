@@ -77,7 +77,7 @@ operations.on("value", (snapshot) => {
 
 operations.on("child_removed", (snapshot) => {
 	const obj = snapshot.val();
-	document.body.removeChild(operationsElements[obj.id]);
+	document.getElementById("operation_container").removeChild(operationsElements[obj.id]);
 	delete operationsElements[operationsElements[obj.id]];
 })
 
