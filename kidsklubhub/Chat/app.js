@@ -10,7 +10,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
 
-//My Code
+// Links and loading
 let user = localStorage.getItem("username");
 let saveUser = false;
 if(user == "null")
@@ -26,9 +26,6 @@ function logUserOut() {
 	localStorage.setItem("username", "null");
 	window.location.href = "../Login/index.html";
 }
-
-let replytomsg = null;
-
 window.addEventListener('beforeunload', (event) => {
   if(!saveUser)
   {
@@ -37,6 +34,21 @@ window.addEventListener('beforeunload', (event) => {
   }
 });
 
+// Chat data
+let replytomsg = null;
+let previousload = {sender: "blub"};
+
+// Chat component builders
+function buildMessageOptions(replyto) {
+	return `
+		<div class="message_options">
+			<button onclick='replytomsg = ${replyto}' class='reply-button'>Reply</button>
+		</div>
+	`;
+}
+
+
+// Attempt send message
 function sendMessage() {
   if(document.querySelector("#bottom-bar").querySelector("#chat_input").value != "")
   {
@@ -53,6 +65,7 @@ function sendMessage() {
   }
 }
 
+// Database stuff to prepare
 let usersD = firebase.database().ref("users");
 const users = firebase.database().ref("users");
 users.on("child_added", (snapshot) => {
@@ -63,10 +76,12 @@ users.on("child_added", (snapshot) => {
 firebase.database().ref("reloader").set({
   	rl: Math.random()*Math.random()*Math.random()*Math.random()*Math.random()
 });
+
+// References
 const chatContainer = document.querySelector("#chat-container");
 let chatD = firebase.database().ref("chat");
 const chat = firebase.database().ref("chat");
-let previousload = {sender: "blub"};
+
 chat.on("child_added", (snapshot) => {
 	const thismessage = snapshot.val();
 	const key = thismessage.id;
@@ -76,6 +91,8 @@ chat.on("child_added", (snapshot) => {
 	// Create the DOM Element
 	const messageElement = document.createElement("div");
 	messageElement.classList.add("Message");
+
+	// Mentions
 	if(thismessage.message.indexOf("@" + user) > -1)
 	{
 		messageElement.classList.add("Mention");
@@ -83,28 +100,47 @@ chat.on("child_added", (snapshot) => {
 	if(thismessage.message.indexOf("@everyone") > -1)
 	{
 		messageElement.classList.add("Mention");
-		messageToDisplay = messageToDisplay.slice(0, thismessage.message.indexOf("@everyone")) + "<span class='mention-text'>" + messageToDisplay.slice(thismessage.message.indexOf("@everyone"), thismessage.message.indexOf("@everyone") + 9) + "</span>" + messageToDisplay.slice(thismessage.message.indexOf("@everyone") + 9);
+		messageToDisplay = `
+			${messageToDisplay.slice(0, thismessage.message.indexOf("@everyone"))}
+			<span class='mention-text'>@everyone</span>
+			${messageToDisplay.slice(thismessage.message.indexOf("@everyone") + 9)}
+		`;
 	}
+
+	// What..?
 	let thisrank = "worker";
 	for (let auser in usersD) {
 		if(usersD[auser]["username"] == thismessage.sender)
 		{
-		thisrank = usersD[auser]["rank"];
+			thisrank = usersD[auser]["rank"];
 		}
 		if(thismessage.message.indexOf("@" + auser) > -1)
 		{
-		messageToDisplay = messageToDisplay.slice(0, thismessage.message.indexOf("@" + auser)) + "<span class='mention-text'>" + messageToDisplay.slice(thismessage.message.indexOf("@" + auser), thismessage.message.indexOf("@" + auser) + auser.length + 1) + "</span>" + messageToDisplay.slice(thismessage.message.indexOf("@" + auser) + auser.length + 1);
+			messageToDisplay = `
+			${messageToDisplay.slice(0, messageToDisplay.indexOf("@" + auser))}
+			<span class='mention-text'>${messageToDisplay.slice(messageToDisplay.indexOf("@" + auser), messageToDisplay.indexOf("@" + auser) + auser.length + 1)}</span>
+			${messageToDisplay.slice(messageToDisplay.indexOf("@" + auser) + auser.length + 1)}`;
 		}
 	}
-	if(previousload.sender == thismessage.sender && thismessage.replyto == null)
-	{
-		messageElement.innerHTML = messageToDisplay + "<button onclick='replytomsg = " + thismessage.id + "' class='reply-button'>Reply</button>";
+
+	// Generate HTML
+	if(previousload.sender == thismessage.sender && thismessage.replyto == null) {
+		messageElement.innerHTML = messageToDisplay + buildMessageOptions(thismessage.id);
 	} else {
 		if(thismessage.replyto != null)
 		{
-		messageElement.innerHTML = "<div class='reply-text'>" + chatD[thismessage.replyto].sender + ": " + chatD[thismessage.replyto].message + "</div><div class='message-name " + thisrank + "'>" + thismessage.sender + "</div>" + messageToDisplay + "<button onclick='replytomsg = " + thismessage.id + "' class='reply-button'>Reply</button>";
+			messageElement.innerHTML = `
+				<div class='reply-text'><img src='../Images/ReplyLine.svg' class='reply_line'>${chatD[thismessage.replyto].sender}: ${chatD[thismessage.replyto].message}</div>
+				<div class='message-name ${thisrank}'>${thismessage.sender}</div>
+				${messageToDisplay}
+				${buildMessageOptions(thismessage.id)}
+			`;
 		} else {
-		messageElement.innerHTML = "<div class='message-name " + thisrank + "'>" + thismessage.sender + "</div>" + messageToDisplay + "<button onclick='replytomsg = " + thismessage.id + "' class='reply-button'>Reply</button>";
+			messageElement.innerHTML = `
+				<div class='message-name ${thisrank}'>${thismessage.sender}</div>
+				${messageToDisplay}
+				${buildMessageOptions(thismessage.id)}
+			`;
 		}
 	}
 	previousload = thismessage;

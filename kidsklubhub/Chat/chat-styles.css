@@ -28,23 +28,25 @@ body {
 }
 
 .Message {
+	padding: 0.1em;
 	padding-left: 1em;
 	padding-right: 1em;
 	border-radius: 0 0.2em 0.2em 0;
+	position: relative;
 }
 
 .Message:has(.message-name) {
-	margin-top: 1em;
+	margin-top: 0.75em;
 }
 
 .Message:hover {
 	background-color: #00000033;
 }
 .Mention {
-	background-color: #ffffff55;
+	background-color: #ffffff1c;
 }
 .Mention:hover {
-	background-color: #ffffff99;
+	background-color: #ffffff55;
 }
 
 .message-name {
@@ -53,33 +55,60 @@ body {
 	font-size: 1em;
 }
 
-.reply-button {
-	width: 40px;
-	height: 15px;
-	font-size: 10px;
+.message_options {
+	height: 1.8em;
+	font-size: 0.7em;
 	padding: 0px;
-	margin-left: 5px;
-	background-color: #00000000;
-	border-color: #00000000;
-	color: #00000000;
-	border-style: solid;
-	border-radius: 5px;
+	background-color: #CCC;
+	color: #000;
+	border: 1px solid #000;
+	border-radius: 0.5em;
 	box-shadow: none;
+	box-sizing: border-box;
+	position: absolute;
+	right: 1em;
+	top: -50%;
+	display: flex;
+	visibility: hidden;
 }
 
-.Message:hover .reply-button {
-	color: black;
-	background-color: #ffffffff;
-	border-color: #777777ff;
+.reply-button {
+	width: 4em;
+	height: 100%;
+	font-size: 0.7em;
+	padding: 0px;
+	background-color: #AAA;
+	color: #000;
+	border: none;
+	border-radius: 0.5em;
+	box-shadow: none;
+	box-sizing: border-box;
+}
+
+.Message:hover .message_options {
+	visibility: visible;
 }
 
 .reply-text {
 	font-size: 0.6em;
 	font-weight: bold;
+	padding-left: 1em;
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+}
+
+.reply_line {
+	width: 2em;
+	fill: white;
 }
 
 .mention-text {
 	font-weight: bold;
+	background-color: rgba(0, 94, 255, 0.52);
+	border: none;
+	border-radius: 0.2em;
+	font-family: monospace;
 }
 
 .leader {
@@ -87,9 +116,6 @@ body {
 }
 .manager {
 	color: purple;
-}
-.worker {
-	color: black;
 }
 
 @media (prefers-color-scheme: dark) {
