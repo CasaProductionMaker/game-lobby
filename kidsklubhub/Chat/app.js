@@ -38,32 +38,51 @@ window.addEventListener('beforeunload', (event) => {
 let replytomsg = null;
 let previousload = {sender: "blub"};
 
-// Chat component builders
-function buildMessageOptions(replyto) {
-	return `
-		<div class="message_options">
-			<button onclick='replytomsg = ${replyto}' class='reply-button'>Reply</button>
-			<button onclick='' class='reply-button'>Delete</button>
-		</div>
-	`;
+// Page references
+const reply_info = document.getElementById("reply_info");
+
+// Chat actions
+function sendMessage() {
+	if(document.querySelector("#bottom-bar").querySelector("#chat_input").value != "")
+	{
+		const date = Date.now();
+		const chatRef = firebase.database().ref(`chat/` + date);
+		chatRef.set({
+			message: document.querySelector("#bottom-bar").querySelector("#chat_input").value, 
+			id: date, 
+			sender: user, 
+			replyto: replytomsg
+		})
+		document.querySelector("#bottom-bar").querySelector("#chat_input").value = "";
+		replytomsg = null;
+		reply_info.classList.remove("replying");
+	}
 }
 
+function setReplyTo(replyto, replying_to_person) {
+	replytomsg = replyto;
+	reply_info.classList.add("replying");
+	document.getElementById("replying_to").textContent = `Replying to @${replying_to_person}`
+}
 
-// Attempt send message
-function sendMessage() {
-  if(document.querySelector("#bottom-bar").querySelector("#chat_input").value != "")
-  {
-    const date = Date.now();
-    const chatRef = firebase.database().ref(`chat/` + date);
-    chatRef.set({
-      message: document.querySelector("#bottom-bar").querySelector("#chat_input").value, 
-      id: date, 
-      sender: user, 
-      replyto: replytomsg
-    })
-    document.querySelector("#bottom-bar").querySelector("#chat_input").value = "";
-    replytomsg = null;
-  }
+function cancelReply() {
+	replytomsg = null;
+	reply_info.classList.remove("replying");
+}
+
+function deleteMessage(messageID) {
+	const chatRef = firebase.database().ref(`chat/` + messageID);
+	chatRef.remove();
+}
+
+// Chat component builders
+function buildMessageOptions(msgID, showDeleteButton, messagesender) {
+	return `
+		<div class="message_options">
+			<button onclick="setReplyTo('${msgID}', '${messagesender}')" class="message_option"><div class="reply_icon fit_icon"></div></button>
+			${showDeleteButton ? `<button onclick="deleteMessage('${msgID}')" class="message_option"><div class="trash_icon fit_icon"></div></button>` : ""}
+		</div>
+	`;
 }
 
 // Database stuff to prepare
@@ -80,9 +99,11 @@ firebase.database().ref("reloader").set({
 
 // References
 const chatContainer = document.querySelector("#chat-container");
-let chatD = firebase.database().ref("chat");
+let chatDOM = {};
+let chatD = {};
 const chat = firebase.database().ref("chat");
 
+// Loading/updating chat
 chat.on("child_added", (snapshot) => {
 	const thismessage = snapshot.val();
 	const key = thismessage.id;
@@ -126,34 +147,45 @@ chat.on("child_added", (snapshot) => {
 
 	// Generate HTML
 	if(previousload.sender == thismessage.sender && thismessage.replyto == null) {
-		messageElement.innerHTML = messageToDisplay + buildMessageOptions(thismessage.id);
+		messageElement.innerHTML = messageToDisplay + buildMessageOptions(thismessage.id, thismessage.sender == user, thismessage.sender);
 	} else {
 		if(thismessage.replyto != null)
 		{
 			messageElement.innerHTML = `
-				<div class='reply-text'><img src='../Images/ReplyLine.svg' class='reply_line'>${chatD[thismessage.replyto].sender}: ${chatD[thismessage.replyto].message}</div>
+				<div class='reply-text'><img src='../Images/WhiteReplyLine.svg' class='reply_line'>${chatD[thismessage.replyto] != undefined ? `${chatD[thismessage.replyto].sender}: ${chatD[thismessage.replyto].message}` : "Message was deleted."}</div>
 				<div class='message-name ${thisrank}'>${thismessage.sender}</div>
 				${messageToDisplay}
-				${buildMessageOptions(thismessage.id)}
+				${buildMessageOptions(thismessage.id, thismessage.sender == user, thismessage.sender)}
 			`;
 		} else {
 			messageElement.innerHTML = `
 				<div class='message-name ${thisrank}'>${thismessage.sender}</div>
 				${messageToDisplay}
-				${buildMessageOptions(thismessage.id)}
+				${buildMessageOptions(thismessage.id, thismessage.sender == user, thismessage.sender)}
 			`;
 		}
 	}
 	previousload = thismessage;
 
 	// Keep a reference for removal later and add to DOM
-	chatContainer.appendChild(messageElement);
-	chatContainer.scrollTop = chatContainer.scrollHeight;
+	chatDOM[key] = chatContainer.appendChild(messageElement);
+	chatContainer.scrollTop = chatContainer.scrollHeight - 100;
 })
+
+chat.on("child_removed", (snapshot) => {
+	const thismessage = snapshot.val();
+	const key = thismessage.id;
+	delete chatD[key];
+	chatContainer.removeChild(chatDOM[key]);
+	delete chatDOM[key];
+})
+
+// Force reload
 firebase.database().ref("reloader").set({
 	rl: Math.random()*Math.random()*Math.random()*Math.random()*Math.random()
 });
 
+// Key presses
 new KeyPressListener("Enter", () => sendMessage());
 new KeyPressListener("KeyQ", () => {
   console.log(replytomsg)	

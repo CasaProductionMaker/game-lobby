@@ -20,12 +20,44 @@ body {
 	box-sizing: border-box;
 	padding: 1em;
 	display: flex;
+	gap: 0.5em;
+	flex-direction: column;
+}
+
+#chat_input_bar {
+	display: flex;
 	gap: 1em;
 }
 
 #chat_input {
 	flex: 2;
 }
+
+#reply_info {
+	display: none;
+	/* display: flex; */
+	justify-content: space-between;
+	align-items: center;
+	margin-left: 1em;
+	font-weight: bold;
+}
+
+#reply_info.replying {
+	display: flex;
+}
+
+#reply_info_text {
+	margin: 0;
+	font-size: 0.7em;
+	display: flex;
+	gap: 0.3em;
+	align-items: center;
+}
+
+.small_button {
+	font-size: 0.6em;
+}
+
 
 .Message {
 	padding: 0.1em;
@@ -56,7 +88,7 @@ body {
 }
 
 .message_options {
-	height: 1.8em;
+	height: 1.6em;
 	padding: 0px;
 	background-color: #CCC;
 	color: #000;
@@ -70,21 +102,36 @@ body {
 	transform: translateY(-50%);
 	display: flex;
 	visibility: hidden;
-	padding: 0.2em;
-	gap: 0.2em;
+	padding: 0.15em;
+	gap: 0.15em;
 }
 
-.reply-button {
-	width: 4em;
+.message_option {
 	height: 100%;
 	font-size: 0.5em;
 	padding: 0px;
-	background-color: #AAA;
-	color: #000;
+	background-color: #0000;
 	border: none;
 	border-radius: 0.5em;
 	box-shadow: none;
 	box-sizing: border-box;
+}
+
+.message_option:hover {
+	background-color: #0003;
+}
+
+.reply_icon {
+	background-image: url(../Images/BlackReplyIcon.svg);
+}
+
+.trash_icon {
+	background-image: url(../Images/BlackTrashIcon.svg);
+}
+
+.fit_icon {
+	height: 100%;
+	aspect-ratio: 1;
 }
 
 .Message:hover .message_options {
@@ -102,7 +149,6 @@ body {
 
 .reply_line {
 	width: 2em;
-	fill: white;
 }
 
 .mention-text {
@@ -127,5 +173,18 @@ body {
 		border: 1px solid #7c8eaf;
 		box-shadow: 0 0 5px #0004;
 		background-color: #4a5569;
+	}
+
+	.message_options {
+		border: 1px solid #444;
+		background-color: #222;
+	}
+
+	.reply_icon {
+		background-image: url(../Images/WhiteReplyIcon.svg);
+	}
+
+	.trash_icon {
+		background-image: url(../Images/WhiteTrashIcon.svg);
 	}
 }
