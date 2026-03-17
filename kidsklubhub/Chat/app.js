@@ -43,6 +43,7 @@ function buildMessageOptions(replyto) {
 	return `
 		<div class="message_options">
 			<button onclick='replytomsg = ${replyto}' class='reply-button'>Reply</button>
+			<button onclick='' class='reply-button'>Delete</button>
 		</div>
 	`;
 }
