@@ -878,7 +878,9 @@ function distanceBetween(x1, y1, x2, y2) {
         direction, 
         animFrame: "", 
         armorType: "No", 
-        skin: localStorage.getItem("TheBattleSkin")
+        skin: localStorage.getItem("TheBattleSkin"), 
+        normalBombs: 0, 
+        blueBombs: 0
       })
 
       //ADD PLAYER JOIN MSG
