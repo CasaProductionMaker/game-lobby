@@ -46,7 +46,6 @@ let direction = 1;
 let summonID = 0;
 let appliedKnock = true;
 let isDead = false;
-let Bombs = [0, 0]
 let lastBombTick = 0;
 let lastAttackTick = 0;
 let userRef;
@@ -451,9 +450,13 @@ function distanceBetween(x1, y1, x2, y2) {
                   armorType: "Blue"
                 })
               } else if(thisPowerup.type == "Bomb") {
-                Bombs[0] += 5;
+                firebase.database().ref(`games/` + gameCode + `/players/` + thisPlayer.id).update({
+                  normalBombs: thisPlayer.normalBombs + 5
+                })
               } else if(thisPowerup.type == "BlueBomb") {
-                Bombs[1] += 5;
+                firebase.database().ref(`games/` + gameCode + `/players/` + thisPlayer.id).update({
+                  blueBombs: thisPlayer.blueBombs + 5
+                })
               }
               firebase.database().ref("games/" + gameCode + "/powerups/" + thisPowerup.id).update({
                 framesAlive: 250
@@ -544,7 +547,7 @@ function distanceBetween(x1, y1, x2, y2) {
       }
       el.style.transform = `translate3d(${left}, ${top}, 0)`;
     })
-    document.querySelector(".player-info").innerHTML = "Bombs: " + Bombs[0] + "<br>Blue Bombs: " + Bombs[1];
+    document.querySelector(".player-info").innerHTML = "Bombs: " + players[playerId].normalBombs + "<br>Blue Bombs: " + players[playerId].blueBombs;
     //repeat
     setTimeout(() => {
       renderLoop();
@@ -606,7 +609,7 @@ function distanceBetween(x1, y1, x2, y2) {
       isSpace = true;
     }, () => {isSpace = false;})
     new KeyPressListener("KeyB", () => {
-      if(Bombs[0] > 0 && currentTick - lastBombTick >= 800)
+      if(players[playerId].normalBombs > 0 && currentTick - lastBombTick >= 800)
       {
         firebase.database().ref(`games/` + gameCode + `/entities/` + summonID).set({
           x: players[playerId].x, 
@@ -618,12 +621,14 @@ function distanceBetween(x1, y1, x2, y2) {
           id: summonID
         })
         summonID++;
-        Bombs[0]--;
+        playerRef.update({
+          normalBombs: players[playerId].normalBombs - 1
+        })
         lastBombTick = currentTick;
       }
     }, () => {})
     new KeyPressListener("KeyN", () => {
-      if(Bombs[1] > 0 && currentTick - lastBombTick >= 800)
+      if(players[playerId].blueBombs > 0 && currentTick - lastBombTick >= 800)
       {
         firebase.database().ref(`games/` + gameCode + `/entities/` + summonID).set({
           x: players[playerId].x, 
@@ -635,7 +640,9 @@ function distanceBetween(x1, y1, x2, y2) {
           id: summonID
         })
         summonID++;
-        Bombs[1]--;
+        playerRef.update({
+          blueBombs: players[playerId].blueBombs - 1
+        })
         lastBombTick = currentTick;
       }
     }, () => {})
