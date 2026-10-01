@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Engineering Club Sign Up</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div id="main">
+			<div id="signup-stuff">
+				<h1>Sign Up for Engineering Club</h1>
+				<div>
+					<label for="fullname">Full Name: </label>
+					<input id="fullname" name="fullname" type="text" placeholder="John Fong">
+				</div>
+				<div>
+					<label for="fullname">Email: </label>
+					<input id="email" name="email" type="email" placeholder="john.fong@gmail.com">
+				</div>
+				<div>
+					<label for="grade">Grade: </label>
+					<select name="grade" id="grade">
+						<option value="8">Grade 8</option>
+						<option value="9">Grade 9</option>
+						<option value="10">Grade 10</option>
+						<option value="11">Grade 11</option>
+						<option value="12">Grade 12</option>
+					</select>
+				</div>
+				<div>
+					<label for="discord">Discord (Optional): </label>
+					<input id="discord" name="discord" type="text" placeholder="johnfong1">
+				</div>
+				<div>
+					<label for="photoperm">Photo consent: </label>
+					<select name="photoperm" id="photoperm">
+						<option value="y">Yes, I give consent</option>
+						<option value="n">No, I do not give consent</option>
+					</select>
+				</div>
+				<button onclick="submit()">Submit</button>
+			</div>
+			<div id="qr-holder">
+				<img src="qr-code.svg">
+			</div>
+		</div>
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+        <script src="app.js"></script>
+    </body>
+</html> 
