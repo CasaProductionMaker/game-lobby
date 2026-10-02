@@ -174,4 +174,8 @@ button {
 	#signup-stuff > div > input, #signup-stuff > div > select, #signup-stuff > button {
 		height: 1.5rem;
 	}
+
+	main {
+		padding: 1rem;
+	}
 }
