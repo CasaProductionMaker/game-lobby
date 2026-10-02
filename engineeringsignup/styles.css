@@ -16,6 +16,8 @@ html {
 		#3368ac 10px,
 		#3368ac 20px
 	);
+	height: 100vh;
+	width: 100vw;
 }
 
 body {
@@ -172,5 +174,9 @@ button {
 		width: 0;
 		flex: 0;
 		padding: 0;
+	}
+
+	#signup-stuff > div > input, #signup-stuff > div > select, #signup-stuff > button {
+		height: 1.75rem;
 	}
 }
