@@ -8,21 +8,22 @@
 }
 
 html {
-	background-color: var(--back-bg);
-	background: repeating-linear-gradient(
+	background-color: #3C78C8; /* solid fallback so nothing is ever blank */
+	background-image: repeating-linear-gradient(
 		-45deg,
 		#3C78C8,
 		#3C78C8 10px,
 		#3368ac 10px,
 		#3368ac 20px
 	);
+	background-attachment: fixed;
 	min-height: 100%;
 }
 
 body {
+	margin: 0;
 	min-height: 100vh;
 	min-height: 100dvh;
-	margin: 0;
 	box-sizing: border-box;
 	display: flex;
 	justify-content: center;
