@@ -9,14 +9,15 @@
     <body>
         <div id="main">
 			<div id="signup-stuff">
+				<img src="rocket.png" alt="">
 				<h1>Sign Up for Engineering Club</h1>
 				<div>
 					<label for="fullname">Full Name: </label>
-					<input id="fullname" name="fullname" type="text" placeholder="John Fong">
+					<input id="fullname" name="fullname" type="text" placeholder="John Smith">
 				</div>
 				<div>
 					<label for="fullname">Email: </label>
-					<input id="email" name="email" type="email" placeholder="john.fong@gmail.com">
+					<input id="email" name="email" type="email" placeholder="john.smith@gmail.com">
 				</div>
 				<div>
 					<label for="grade">Grade: </label>
@@ -30,7 +31,7 @@
 				</div>
 				<div>
 					<label for="discord">Discord (Optional): </label>
-					<input id="discord" name="discord" type="text" placeholder="johnfong1">
+					<input id="discord" name="discord" type="text" placeholder="johnsmith1">
 				</div>
 				<div>
 					<label for="photoperm">Photo consent: </label>
@@ -39,12 +40,18 @@
 						<option value="n">No, I do not give consent</option>
 					</select>
 				</div>
-				<button onclick="submit()">Submit</button>
+				<button onclick="submit()">
+				<p id="failure-message"></p>Submit</button>
 			</div>
 			<div id="qr-holder">
 				<img src="logo.png">
 				<img src="qr-code.svg">
 			</div>
+		</div>
+		<div id="success-modal">
+			<h2>Success!</h2>
+			
+			<button id="close-success">Close</button>
 		</div>
         <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     	<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>

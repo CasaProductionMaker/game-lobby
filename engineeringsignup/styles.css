@@ -1,11 +1,5 @@
 * {
-	/* --back-bg: #222;
-	--main-bg: #333;
-	--main-border: #555;
-	--input-bg: #444;
-	--input-border: #666;
-	--text-color: #DDD; */
-	--back-bg: #478dd2;
+	--back-bg: #3C78C8;
 	--main-bg: white;
 	--main-border: transparent;
 	--input-bg: #DDD;
@@ -26,10 +20,10 @@ body {
 	background-color: var(--back-bg);
 	background: repeating-linear-gradient(
 		-45deg,
-		#478dd2,
-		#478dd2 10px,
-		#407cb9 10px,
-		#407cb9 20px
+		#3C78C8,
+		#3C78C8 10px,
+		#3368ac 10px,
+		#3368ac 20px
 	);
 }
 
@@ -38,11 +32,12 @@ h1 {
 	font-size: 1.5rem;
 	line-height: 1.5rem;
 	color: var(--text-color);
+	z-index: 5;
 }
 
 #main {
 	background-color: var(--main-bg);
-	box-shadow: 0 0 3rem #0005;
+	box-shadow: 0 0 3rem #0008;
 	border: 1px solid var(--main-border);
 	width: 60%;
 	height: 70%;
@@ -50,11 +45,11 @@ h1 {
 	border-radius: 1rem;
 	display: flex;
 	gap: 1rem;
-	background-image: url("/rocket.png");
+	/* background-image: url("/rocket.png");
 	background-attachment: fixed;
   	background-size: 30rem;
 	background-repeat: no-repeat;
-  	background-position: top center;
+  	background-position: top center; */
 }
 
 #signup-stuff {
@@ -71,6 +66,12 @@ h1 {
 	flex-direction: column;
 	gap: 0.25rem;
 	color: var(--text-color);
+}
+
+#signup-stuff > img {
+	width: 3rem;
+	transform: scale(4);
+	z-index: 1;
 }
 
 #signup-stuff > div > input, #signup-stuff > div > select, #signup-stuff > button {
@@ -93,6 +94,19 @@ h1 {
 	cursor: pointer;
 }
 
+button {
+	cursor: pointer;
+}
+
+#signup-stuff > button {
+	font-size: 1rem;
+	background-color: var(--back-bg);
+	border: none;
+	color: var(--main-bg);
+	position: relative;
+	margin-top: 1rem;
+}
+
 /* select::after {
 	content: "";
 	width: 1rem;
@@ -101,10 +115,6 @@ h1 {
 	position: relative;
 	right: 0.5rem;
 } */
-
-button {
-	cursor: pointer;
-}
 
 #qr-holder {
 	flex: 1;
@@ -123,6 +133,35 @@ button {
 	min-height: 0;
 	min-width: 0;
 	aspect-ratio: 1;
+}
+
+#failure-message {
+	color: red;
+	font-weight: 500;
+	position: absolute;
+	top: -1.6rem;
+	line-height: 0.75rem;
+	font-size: 0.75rem;
+}
+
+#success-modal {
+	background-color: var(--main-bg);
+	border: 1px solid var(--input-border);
+	box-shadow: 0 0 1rem #0008;
+	border-radius: 0.5rem;
+	display: none;
+	flex-direction: column;
+	position: absolute;
+	padding: 1rem;
+}
+
+#success-modal > button {
+	background-color: var(--back-bg);
+	border: none;
+	height: 2rem;
+	font-size: 1rem;
+	color: var(--main-bg);
+	border-radius: 0.25rem;
 }
 
 @media (max-width: 700px) {
