@@ -135,15 +135,6 @@ button {
 	aspect-ratio: 1;
 }
 
-#failure-message {
-	color: red;
-	font-weight: 500;
-	position: absolute;
-	top: -1.6rem;
-	line-height: 0.75rem;
-	font-size: 0.75rem;
-}
-
 #success-modal {
 	background-color: var(--main-bg);
 	border: 1px solid var(--input-border);

@@ -12,7 +12,6 @@ const app = firebase.initializeApp(firebaseConfig);
 
 const successModal = document.getElementById('success-modal');
 const closeSuccess = document.getElementById('close-success');
-const failureMessage = document.getElementById('failure-message');
 
 closeSuccess.addEventListener('click', () => {
     successModal.style.display = "none";
@@ -20,10 +19,9 @@ closeSuccess.addEventListener('click', () => {
 
 function submit() {
     if (document.querySelector("#fullname").value === "" || document.querySelector("#email").value === "") {
-        failureMessage.textContent = "Failed! Fill in all the fields."
+        alert("Make sure to fill in all the fields.");
         return;
     }
-    failureMessage.textContent = ""
 
     firebase.database().ref(`signups/${Date.now()}${Math.round(Math.random() * 1000)}`).set({
         discord: document.querySelector("#discord").value, 
