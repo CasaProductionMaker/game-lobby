@@ -7,29 +7,24 @@
 	--text-color: #333;
 }
 
-html {
-	background-color: var(--back-bg);
-	background: repeating-linear-gradient(
-		-45deg,
-		#3C78C8,
-		#3C78C8 10px,
-		#3368ac 10px,
-		#3368ac 20px
-	);
-	height: 100vh;
-	width: 100vw;
-}
-
 body {
-	width: 100%;
-	height: 100vh;
-	margin: 0;
-	box-sizing: border-box;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-family: 'Courier New', Courier, monospace;
-	font-weight: 600;
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 600;
+    background-color: var(--back-bg);
+    background: repeating-linear-gradient(
+        -45deg,
+        #3C78C8,
+        #3C78C8 10px,
+        #3368ac 10px,
+        #3368ac 20px
+    );
 }
 
 h1 {
@@ -177,6 +172,6 @@ button {
 	}
 
 	#signup-stuff > div > input, #signup-stuff > div > select, #signup-stuff > button {
-		height: 1.75rem;
+		height: 1.5rem;
 	}
 }
